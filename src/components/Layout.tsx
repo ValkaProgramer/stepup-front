@@ -6,18 +6,18 @@ import { useEffect } from "react";
 
 const Layout = () => {
   const { isAuthenticated } = useAuth();
-  const navigate = useNavigate(); // Use React Router's navigation hook
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate("/"); // Navigate to the home page
+      navigate("/");
     }
   }, [isAuthenticated, navigate]);
 
   return (
     <>
       <Header />
-      <main className="flex flex-1">
+      <main className="flex flex-1 justify-center items-center">
         <Outlet />
       </main>
       <Footer />

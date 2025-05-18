@@ -1,12 +1,31 @@
 #root {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   min-height: 100vh;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 0;
+  padding-bottom: 0;
   text-align: center;
   width: 100%;
+}
+
+
+.text-with-stroke {
+  -webkit-text-stroke: 2px yellow;
+  color: black;
+}
+
+.reminder-content {
+  overflow: hidden;
+  transition: max-height 1s ease;
+}
+
+.reminder-content.collapsed {
+  max-height: 0;
+}
+
+.reminder-content.expanded {
+  max-height: 500px;
 }
 
 .stripe-pattern {
@@ -38,10 +57,4 @@
   font-family: Mionta;
   position: relative;
   z-index: 100;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
 }

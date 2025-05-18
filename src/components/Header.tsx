@@ -1,4 +1,4 @@
-import { Settings, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 
 function Header() {
@@ -7,18 +7,20 @@ function Header() {
   };
 
   return (
-    <div className="stripe-pattern flex flex-row justify-center">
+    <div className="shadow-sm bg-white flex flex-row justify-center rounded-b-4xl p-5">
       <div>
-        <h1 className="use-mionta">STEPUP</h1>
+        <h1 className="use-mionta text-with-stroke">
+          STEP <br /> UP
+        </h1>
       </div>
-      <Link to="/settings" className="inline-flex">
+      {/* <Link to="/settings" className="inline-flex">
         <button className="p-2">
-          <Settings />
+          <Settings color="black" />
         </button>
-      </Link>
+      </Link> */}
       <Link to="/" className="inline-flex">
-        <button onClick={() => handleLogout()} className="p-2">
-          <LogOut />
+        <button onClick={() => handleLogout()} className="p-1 cursor-pointer">
+          <LogOut color="black" />
         </button>
       </Link>
       <div></div>

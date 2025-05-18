@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -18,19 +19,11 @@ const LoginPage: React.FC = () => {
     );
   };
 
-  //   const validateUsername = (username: string) => {
-  //     return username.length >= 8 && username.length <= 24;
-  //   };
-
-  //   const validatePassword = (password: string) => {
-  //     return password.length >= 8 && password.length <= 24;
-  //   };
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/api/login", {
+      const res = await axios.post("http://localhost:5000/api/users/login", {
         username,
         password,
       });
@@ -38,9 +31,9 @@ const LoginPage: React.FC = () => {
       const token = res.data.token;
       localStorage.setItem("token", token);
 
-      setMessage("Login successful!");
-      navigate("/home");
+      toast.success("You have successfully logged in!");
 
+      navigate("/home");
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         setMessage(err.response?.data?.message || "Login failed.");
@@ -51,43 +44,56 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: 500, margin: "auto", paddingTop: 40 }}>
-      <h2>Login</h2>
+    <div className="text-black grow">
+      <div className="top-0 pt-[20vh] pb-[10vh] text-2xl ">
+        <h1 className="mb-10 font-semibold">Login</h1>
+      </div>
       <form onSubmit={handleLogin}>
         <div>
-          <label>Username:</label>
           <br />
           <input
+            className="border-[#E8E8E8] border-2 rounded-[8px] bg-[#F7F6F6] p-1"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            placeholder="Username"
           />
         </div>
         <div>
-          <label>Password:</label>
           <br />
           <input
+            className="border-[#E8E8E8] border-2 rounded-[8px] bg-[#F6F6F6] p-1"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            placeholder="Password"
           />
         </div>
         <button
           disabled={!validateCredentials(username, password)}
           type="submit"
           style={{ marginTop: 10 }}
+          className={`mb-8 rounded-[100px] bg-[#FFDF2B] ${
+            !validateCredentials(username, password)
+              ? ""
+              : "hover:bg-[#00DF2B] cursor-pointer"
+          }`}
         >
           Login
         </button>
       </form>
-      {!validateCredentials(username, password) ?
+      {!validateCredentials(username, password) ? (
         <>
-          <p className="mt-0">Username should not be more than 24 or less than 5 characters</p>
+          <p className="mt-0">
+            Username should not be more than 24 or less than 5 characters
+          </p>
           <p>Password should not be more than 24 or less than 8 characters</p>
-        </> : ""
-      }
+        </>
+      ) : (
+        ""
+      )}
       {message && <p style={{ color: "crimson" }}>{message}</p>}
     </div>
   );

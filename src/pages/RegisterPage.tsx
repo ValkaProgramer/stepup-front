@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -32,16 +33,17 @@ const RegisterPage: React.FC = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/register", {
+      await axios.post("http://localhost:5000/api/users/register", {
         username,
         password,
         confirmPassword,
       });
 
-      setMessage(response.data.message);
+      toast.success("Account registered successfully!");
+
       setConfirmPassword("");
 
-      navigate("/");
+      navigate("/login");
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         setMessage(err.response?.data?.message || "Registration failed.");
@@ -52,43 +54,53 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: 500, margin: "auto", paddingTop: 40 }}>
-      <h2>Register</h2>
+    <div className="text-black grow">
+      <div className="top-0 pt-[20vh] pb-[10vh] text-2xl">
+        <h1 className="mb-10 font-semibold">Sign Up</h1>
+      </div>
       <form onSubmit={handleRegister}>
         <div>
-          <label>Username:</label>
           <br />
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            className="border-[#E8E8E8] border-2 rounded-[8px] bg-[#F6F6F6] p-1"
+            placeholder="Username"
           />
         </div>
         <div>
-          <label>Password:</label>
           <br />
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="border-[#E8E8E8] border-2 rounded-[8px] bg-[#F6F6F6] p-1"
+            placeholder="Password"
           />
         </div>
         <div>
-          <label>Confirm Password:</label>
           <br />
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            className="border-[#E8E8E8] border-2 rounded-[8px] bg-[#F6F6F6] p-1"
+            placeholder="Confirm password"
           />
         </div>
         <button
           disabled={!validateCredentials(username, password, confirmPassword)}
           type="submit"
           style={{ marginTop: 10 }}
+          className={`mb-8 rounded-[100px] bg-[#FFDF2B] ${
+            !validateCredentials(username, password, confirmPassword)
+              ? ""
+              : "hover:bg-[#00DF2B] cursor-pointer"
+          }`}
         >
           Register
         </button>
